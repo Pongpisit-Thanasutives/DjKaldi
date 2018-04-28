@@ -9,12 +9,14 @@ import os
 import vlc
 import pyttsx3
 from random import randint
+import speech_recognition as sr
 
 interrupted = False
 
 def reduce_noise():
-    pwd = getpass.getpass()
-    proc = Popen(["sudo", "-S", "ffmpeg", "-i", "microphone-results.wav", "-af", "highpass=f=300, lowpass=f=3400", "microphone-results.wav"], stdout=PIPE, stdin=PIPE, stderr=PIPE, universal_newlines=True)
+    # pwd = getpass.getpass()
+    pwd = 'hackmeifyoucan'
+    proc = Popen(["sudo", "-S", "ffmpeg", "-i", "microphone-results.wav", "-af", "highpass=f=300, lowpass=f=8000", "microphone-results.wav"], stdout=PIPE, stdin=PIPE, stderr=PIPE, universal_newlines=True)
     proc.stdin.write("{}\n".format(pwd))
     out,err = proc.communicate(input="{}\n".format("y"))
 
@@ -38,7 +40,7 @@ def detectedCallback():
     count_penelties = 0
     while True:
         reduce_noise()
-        result = subprocess.check_output(["/usr/local/opt/python/bin/python2.7", "newClient.py", "-u", "ws://localhost:8080/client/ws/speech", "-r", "32000", "microphone-results.wav"])
+        result = subprocess.check_output(["/usr/local/opt/python/bin/python2.7", "/Users/pongpisit/Desktop/snowboy/app/Python3/newClient.py", "-u", "ws://localhost:8080/client/ws/speech", "-r", "32000", "/Users/pongpisit/Desktop/snowboy/app/Python3/microphone-results.wav"])
         if result: 
             trans = result.decode('utf-8').replace('\n', '').split('.')[0]
             if trans != '':
@@ -46,14 +48,15 @@ def detectedCallback():
                 break
             else:
                 count_penelties += 1
-                print(count_penelties)
-                if count_penelties == 3:break
+                # print(count_penelties)
+                if count_penelties == 2:break
     # print(count_penelties)
 
     if command != '':
         if command == kor:
             print("Perform task: " + command)
             if state == 0:
+                talk(songs[now])
                 player.play()
                 state = 1
 
@@ -67,9 +70,11 @@ def detectedCallback():
 
                 song = path + '/' + songs[history[now]]
                 player = vlc.MediaPlayer(song)
+                talk(songs[now])
                 player.play()
 
             elif state == 2:
+                talk(songs[now])
                 player.play()
                 state = 1
 
@@ -87,6 +92,7 @@ def detectedCallback():
                 history = history[:now]
                 now -= 1
                 state = 1
+                talk(songs[now])
                 player.play()
             else:
                 print("Perform task: " + "หยุด เล่น")
@@ -95,12 +101,80 @@ def detectedCallback():
                 state = 2
         else:
             print("Not recognized as 1 of the commands or not sure, Please try again")
-            if state == 1: player.play()
+            if state == 1:
+                talk(songs[now])
+                player.play()
     else:
-        print("Please try again")
-        talk('Mai roo jak')
-        if state == 1: player.play()
+        # print("Please try again")
+        # talk('Mai roo jak')
+        
+        ### Uncomment this to get only kaldi engine ###
+        # print("Please try again")
+        # if state == 1: player.play()
 
+        # use the audio file as the audio source
+        r = sr.Recognizer()
+        with sr.AudioFile("microphone-results.wav") as source:
+            audio = r.record(source)  # read the entire audio file
+
+        # recognize speech using recognize_google
+        try:
+            command = r.recognize_google(audio, language="th-TH")
+
+            if command != '':
+                if command == "ขอเพลง":
+                    print("Perform task: " + kor)
+                    if state == 0:
+                        player.play()
+                        state = 1
+
+                    elif state == 1:
+                        player.stop()
+                        next_rnd = randint(0, numSongs - 1)
+                        while(next_rnd == history[now]):
+                            next_rnd = randint(0, numSongs - 1)
+                        history.append(next_rnd)
+                        now += 1
+
+                        song = path + '/' + songs[history[now]]
+                        player = vlc.MediaPlayer(song)
+                        player.play()
+
+                    elif state == 2:
+                        player.play()
+                        state = 1
+
+                elif command == "หยุดเล่น":
+                    print("Perform task: " + stop)
+                    print("pause the song")
+                    state = 2
+
+                elif command == "กลับ":
+                    if now != 0:
+                        print("Perform task: " + command)
+                        print("back to the previous song")
+                        player.stop()
+                        player = vlc.MediaPlayer(path + '/' + songs[history[now - 1]])
+                        history = history[:now]
+                        now -= 1
+                        state = 1
+                        player.play()
+                    else:
+                        print("Perform task: " + "หยุด เล่น")
+                        print("There is no previous song")
+                        print("pause the song")
+                        state = 2
+                else:
+                    print("Not recognized as 1 of the commands or not sure, Please try again")
+                    if state == 1: player.play()
+            else:
+                print("Please try again")
+                if state == 1: player.play()    
+        except:
+            print("Please try again")
+            if state == 1: player.play()
+
+    detector = snowboydecoder.HotwordDetector(model, sensitivity=0.6)
     detector.start(detected_callback=detectedCallback,
                    interrupt_check=interrupt_callback,
                    sleep_time=0.03)
@@ -114,9 +188,9 @@ def interrupt_callback():
     return interrupted
 
 ### Main starts here ###
-if len(sys.argv) != 2:
-    print("Error: need to specify model name and the directory containing")
-    sys.exit(-1)
+# if len(sys.argv) != 2:
+#     print("Error: need to specify model name and the directory containing")
+#     sys.exit(-1)
 
 # Specify your model
 global model
@@ -129,7 +203,7 @@ global detector, path, songs, numSongs, isEnd, state, now, player, kor, back, st
 detector = snowboydecoder.HotwordDetector(model, sensitivity=0.5)
 
 # Set up
-path = sys.argv[1]
+path = "/Users/pongpisit/Desktop/songs"
 songs = os.listdir(path)
 numSongs = len(songs)
 isEnd = False

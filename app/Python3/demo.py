@@ -2,16 +2,14 @@ import snowboydecoder
 import sys
 import signal
 import Microphone
+import subprocess
+
 
 interrupted = False
+p = subprocess.Popen(["open", "logo.png"])
 
 def fun():
-    detector.terminate()
-    Microphone.record()
-    
-    # Start recognition here
-
-    detector.start()
+    print("GOT YOU!")
 
 def signal_handler(signal, frame):
     global interrupted
@@ -22,12 +20,12 @@ def interrupt_callback():
     global interrupted
     return interrupted
 
-if len(sys.argv) == 1:
-    print("Error: need to specify model name")
-    print("Usage: python demo.py your.model")
-    sys.exit(-1)
+# if len(sys.argv) == 1:
+#     print("Error: need to specify model name")
+#     print("Usage: python demo.py your.model")
+#     sys.exit(-1)
 
-model = sys.argv[1]
+model = 'dj_kaldi.pmdl'
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
