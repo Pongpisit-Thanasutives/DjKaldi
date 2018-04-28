@@ -1,0 +1,40 @@
+load('mel_filters.mat')
+plot((0:256)'/256*8000, mel_filters)
+title('Mel filter banks')
+xlabel('frequency (Hz)')
+ylabel('weight')
+
+function [distance] = d(template, test, x, y)
+	distance = realmax;
+	if (x == 1 & y == 1)
+		distance = euclidien(template(:,1), test(:, 1));
+		return;
+	else
+		if (x < 1 || x > size(template)(1) || y < 1 || y > size(test)(1))
+			return;
+		endif
+
+		if (x-2 >= 1 & y-1 >= 1)
+			distance = min(distance, d(template, test, x-2, y-1) + 2 * euclidien(template(:, x), test(:, y)));
+		endif
+
+		if (x-1 >= 1 & y-1 >= 1)
+			distance = min(distance, d(template, test, x-1, y-1) + euclidien(template(:, x), test(:, y)));
+		endif
+
+		if (x-1 >= 1 & y-2 >= 1)
+			distance = min(distance, d(template, test, x-1, y-2) + euclidien(template(:, x), test(:, y)));
+		endif
+	endif
+endfunction
+
+function [distance] = compute_dtw(template,test)
+    %Given input template and test
+    %Compute the dtw distance
+    distance = realmax;
+    for y = size(template)(1) - 50:max(size(template)(1) + 50, size(test)(1))
+    	for x = 1:size(template)
+    		distance = min(distance, d(template, test, x, y));
+    	endfor
+    endfor
+end
