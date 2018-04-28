@@ -14,8 +14,7 @@ import speech_recognition as sr
 interrupted = False
 
 def reduce_noise():
-    # pwd = getpass.getpass()
-    pwd = 'hackmeifyoucan'
+    pwd = getpass.getpass()
     proc = Popen(["sudo", "-S", "ffmpeg", "-i", "microphone-results.wav", "-af", "highpass=f=300, lowpass=f=8000", "microphone-results.wav"], stdout=PIPE, stdin=PIPE, stderr=PIPE, universal_newlines=True)
     proc.stdin.write("{}\n".format(pwd))
     out,err = proc.communicate(input="{}\n".format("y"))
