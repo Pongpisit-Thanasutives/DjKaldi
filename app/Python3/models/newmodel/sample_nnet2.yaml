@@ -25,7 +25,7 @@ decoder:
     #big-lm-const-arpa: test/models/english/tedlium_nnet_ms_sp_online/G.carpa
     #phone-syms: test/models/english/tedlium_nnet_ms_sp_online/phones.txt
     #word-boundary-file: test/models/english/tedlium_nnet_ms_sp_online/word_boundary.int
-    #do-phone-alignment: true
+    do-phone-alignment: true
 out-dir: tmp
 
 use-vad: False
