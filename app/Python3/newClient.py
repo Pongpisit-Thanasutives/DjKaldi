@@ -67,11 +67,11 @@ class MyClient(WebSocketClient):
                         confidence = 1 - exp(-confidence)
                     else:
                         confidence = 1.0e+10;
-                    if confidence * 100 > 28:
+                    if confidence * 100 > 40:
                         self.final_hyps.append(trans)
                     else:
                         self.final_hyps.append('')
-
+                        
     def get_full_hyp(self, timeout=120):
         return self.final_hyp_queue.get(timeout)
 

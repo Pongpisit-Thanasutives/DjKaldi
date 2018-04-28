@@ -95,7 +95,7 @@ class HotwordDetector(object):
     def __init__(self, decoder_model,
                  resource=RESOURCE_FILE,
                  sensitivity=[],
-                 audio_gain=1.1,
+                 audio_gain=1,
                  apply_frontend=False):
 
         tm = type(decoder_model)

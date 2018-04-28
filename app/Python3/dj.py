@@ -14,8 +14,9 @@ import speech_recognition as sr
 interrupted = False
 
 def reduce_noise():
+    subprocess.call("./clean.sh")
     pwd = getpass.getpass()
-    proc = Popen(["sudo", "-S", "ffmpeg", "-i", "microphone-results.wav", "-af", "highpass=f=300, lowpass=f=8000", "microphone-results.wav"], stdout=PIPE, stdin=PIPE, stderr=PIPE, universal_newlines=True)
+    proc = Popen(["sudo", "-S", "ffmpeg", "-i", "microphone-results-clean.wav", "-af", "highpass=300, lowpass=3400", "microphone-results.wav"], stdout=PIPE, stdin=PIPE, stderr=PIPE, universal_newlines=True)
     proc.stdin.write("{}\n".format(pwd))
     out,err = proc.communicate(input="{}\n".format("y"))
 
@@ -31,7 +32,6 @@ def detectedCallback():
     talk('Me kaldi')
     
     if state != 2: player.pause()
-    snowboydecoder.play_audio_file
     Microphone.record()
 
     # Start recognition here
@@ -39,7 +39,7 @@ def detectedCallback():
     count_penelties = 0
     while True:
         reduce_noise()
-        result = subprocess.check_output(["/usr/local/opt/python/bin/python2.7", "/Users/pongpisit/Desktop/snowboy/app/Python3/newClient.py", "-u", "ws://localhost:8080/client/ws/speech", "-r", "32000", "/Users/pongpisit/Desktop/snowboy/app/Python3/microphone-results.wav"])
+        result = subprocess.check_output(["/usr/local/opt/python/bin/python2.7", "/Users/pongpisit/Desktop/snowboy/app/Python3/newClient.py", "-u", "ws://localhost:8080/client/ws/speech", "-r", "32000", "/Users/pongpisit/Desktop/snowboy/app/Python3/microphone-results-clean.wav"])
         if result: 
             trans = result.decode('utf-8').replace('\n', '').split('.')[0]
             if trans != '':
@@ -55,7 +55,6 @@ def detectedCallback():
         if command == kor:
             print("Perform task: " + command)
             if state == 0:
-                talk(songs[now])
                 player.play()
                 state = 1
 
@@ -69,39 +68,35 @@ def detectedCallback():
 
                 song = path + '/' + songs[history[now]]
                 player = vlc.MediaPlayer(song)
-                talk(songs[now])
                 player.play()
 
             elif state == 2:
-                talk(songs[now])
                 player.play()
                 state = 1
 
         elif command == stop:
             print("Perform task: " + command)
-            print("pause the song")
+            print("Pause the song")
             state = 2
 
         elif command == back:
             if now != 0:
                 print("Perform task: " + command)
-                print("back to the previous song")
+                print("Back to the previous song")
                 player.stop()
                 player = vlc.MediaPlayer(path + '/' + songs[history[now - 1]])
                 history = history[:now]
                 now -= 1
                 state = 1
-                talk(songs[now])
                 player.play()
             else:
                 print("Perform task: " + "หยุด เล่น")
                 print("There is no previous song")
-                print("pause the song")
+                print("Pause the song")
                 state = 2
         else:
             print("Not recognized as 1 of the commands or not sure, Please try again")
             if state == 1:
-                talk(songs[now])
                 player.play()
     else:
         # print("Please try again")
@@ -173,7 +168,6 @@ def detectedCallback():
             print("Please try again")
             if state == 1: player.play()
 
-    detector = snowboydecoder.HotwordDetector(model, sensitivity=0.6)
     detector.start(detected_callback=detectedCallback,
                    interrupt_check=interrupt_callback,
                    sleep_time=0.03)

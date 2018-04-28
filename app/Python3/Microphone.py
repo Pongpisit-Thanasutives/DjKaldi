@@ -1,6 +1,7 @@
 import pyaudio
 import wave 
 from pysine import sine
+from time import sleep	
 
 def record():
 	FORMAT = pyaudio.paInt16
@@ -11,13 +12,13 @@ def record():
 	WAVE_OUTPUT_FILENAME = "microphone-results.wav"
 	audio = pyaudio.PyAudio()
 	
+	sine(frequency=440.0, duration=0.1)
+	sleep(0.2)
+
 	# start Recording
 	stream = audio.open(format=FORMAT, channels=CHANNELS,
 	                rate=RATE, input=True,
 	                frames_per_buffer=CHUNK)
-
-	# Signal telling the user to speak
-	sine(frequency=250.0, duration=0.25)
 
 	print("recording...")
 	frames = []
