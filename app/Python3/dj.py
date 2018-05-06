@@ -10,7 +10,6 @@ import os
 import vlc
 import pyttsx3
 from random import randint
-import speech_recognition as sr
 import connectViaSocket as client
 
 interrupted = False
