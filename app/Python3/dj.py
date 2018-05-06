@@ -196,11 +196,11 @@ detector = snowboydecoder.HotwordDetector(model, sensitivity=0.55)
 
 # Set up
 path = "/Users/pongpisit/Desktop/songs"
-songs = os.listdir(path)
+songs = [s for s in os.listdir(path) if '.mp3' in s]
 numSongs = len(songs)
-edmSongs = os.listdir(path + '/edm')
+edmSongs = [s for s in os.listdir(path + '/edm') if '.mp3' in s]
 numEdmSongs = len(edmSongs)
-popSongs = os.listdir(path + '/pop')
+popSongs = [s for s in os.listdir(path + '/pop') if '.mp3' in s]
 numPopSongs = len(popSongs)
 isEnd = False
 state = 0 # 0 = ไม่มีเพลงเล่น, 1 = มีเพลงเล่น, 2 = มีเพลงเล่นแต่หยุด
