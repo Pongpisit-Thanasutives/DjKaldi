@@ -1,13 +1,18 @@
 # ASR
-Chulalongkorn university automatic speech recognition homeworks
+Chulalongkorn university automatic speech recognition term project
 
 For server
+
 docker pull jcsilva/docker-kaldi-gstreamer-server
-and put models under opt/
+and put models folder under opt/
 
-To start the first model /opt/start.sh -y /opt/models/newmodel/sample_nnet2.yaml at /
+To start the first model(1st stage) using the new acoustic model (bugs) /opt/start.sh -y /opt/models/newmodel/sample_nnet2.yaml at /
 
-To start the second model /opt/start.sh -y /opt/models/newmodel2/sample_nnet2.yaml at /
+To start the first model(1st stage) using the old acoustic model (working) /opt/start.sh -y /opt/models/model/sample_nnet2.yaml at /
+
+To start the second model(2nd stage) using the new acoustic model (bugs) /opt/start.sh -y /opt/models/newmodel2/sample_nnet2.yaml at /
+
+To start the second model(2nd stage) using the old acoustic model (woking) /opt/start.sh -y /opt/models/model2/sample_nnet2.yaml at /
 
 For client
 The first model: python2 client.py -u ws://localhost:8080/client/ws/speech -r 32000 <testfile>.wav
