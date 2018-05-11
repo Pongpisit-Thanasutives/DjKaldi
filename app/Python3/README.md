@@ -2,6 +2,7 @@
 Chulalongkorn university automatic speech recognition term project
 
 For server
+
 docker pull jcsilva/docker-kaldi-gstreamer-server
 and put models folder under opt/
 
