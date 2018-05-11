@@ -27,7 +27,7 @@ def talk(sentence):
     engine.runAndWait()
 
 def state2event():
-    mapping = {'สุ่ม' : 'ป๊อป', 'ป๊อป' : 'สุ่ม', 'อีดีเอ็ม' : 'อีดีเอ็ม', '':''}
+    # mapping = {'สุ่ม' : 'ป๊อป', 'ป๊อป' : 'สุ่ม', 'อีดีเอ็ม' : 'อีดีเอ็ม', '':''}
 
     Microphone.record("state2-microphone-results.wav", 2.2)
     
@@ -43,7 +43,7 @@ def state2event():
         state2_command = subprocess.check_output(["/usr/local/opt/python/bin/python2.7", "/Users/pongpisit/Desktop/snowboy/app/Python3/state2_client.py", "-u", "ws://localhost:9000/client/ws/speech", "-r", "32000", "/Users/pongpisit/Desktop/snowboy/app/Python3/state2-microphone-results.wav"])
         if state2_command != '':
             state2_command = state2_command.decode('utf-8').replace('\n', '').split('.')[0].strip()
-            state2_command = mapping[state2_command]
+            # state2_command = mapping[state2_command]
             break
         else:
             count_penelties += 1
