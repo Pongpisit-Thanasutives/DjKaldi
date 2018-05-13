@@ -27,11 +27,12 @@ def talk(sentence):
     engine.runAndWait()
 
 def state2event():
+    # If you using 2018 acoustic model, you may want to apply this mapping before the return statement
     # mapping = {'สุ่ม' : 'ป๊อป', 'ป๊อป' : 'สุ่ม', 'อีดีเอ็ม' : 'อีดีเอ็ม', '':''}
 
     Microphone.record("state2-microphone-results.wav", 2.2)
-    
     subprocess.call("./state2_clean.sh")
+
     # replace pwd with your password
     pwd = ''
     proc = Popen(["sudo", "-S", "ffmpeg", "-i", "state2-microphone-results-clean.wav", "-af", "highpass=300, lowpass=3400", "state2-microphone-results-clean.wav"], stdout=PIPE, stdin=PIPE, stderr=PIPE, universal_newlines=True)
