@@ -2,7 +2,7 @@
 Chulalongkorn university automatic speech recognition term project
 
 # To start ASR servers
-1. `docker pull jcsilva/docker-kaldi-gstreamer-server and **put models folder under opt/**`  
+1. `docker pull jcsilva/docker-kaldi-gstreamer-server` and **put models folder under opt/**
 2. To start the 1st stage server: `docker run -it -p 8080:80 -v <path_to_model>:/opt/models jcsilva/docker-kaldi-gstreamer-server:latest /bin/bash`  
 3. To start the 2nd stage server: `docker run -it -p 9000:80 -v <path_to_model>:/opt/models jcsilva/docker-kaldi-gstreamer-server:latest /bin/bash`
 ---
