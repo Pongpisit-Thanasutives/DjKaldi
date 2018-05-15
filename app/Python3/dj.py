@@ -183,7 +183,7 @@ def interrupt_callback():
     global interrupted
     return interrupted
 
-# Specify your model 'jarvis.umdl'
+# Specify your model. If you wants a universal model, replace 'dj_kaldi.pmdl' with 'jarvis.umdl'.
 global model
 model = 'dj_kaldi.pmdl'
 

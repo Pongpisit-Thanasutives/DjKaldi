@@ -27,3 +27,9 @@ The second model: `python2 client.py -u ws://localhost:9000/client/ws/speech -r 
 # To run the bot
 1. At least you need to start the backend server. Clone https://github.com/kamemos/ASR-Project and npm start at /asr-back  
 2. Run `python dj.py` or `./dj.sh` from wherever in your computer (Make sure that the directories inside the bash script are correct.)
+
+# Important notes about the directory containing your songs and misc
+1. (line 198) path is the string variable which tells the program where your songs locate. In the original code it is `"/Users/pongpisit/Desktop/songs"`  
+2. path should contain random songs, 1 directory named edm which contains edm songs (e.g. `"/Users/pongpisit/Desktop/songs/edm"`) and 1 directory named pop which contains pop songs (e.g. `"/Users/pongpisit/Desktop/songs/pop"`)  
+3. Change the code at line 44 and 72 in dj.py. They should be changed to `["/path/to/executable/python2.7", "/path/to/state2_client.py", "-u", "ws://localhost:9000/client/ws/speech", "-r", "32000", "/path/to/state2-microphone-results.wav"]` and `["/path/to/python2.7", "/path/to/newClient.py", "-u", "ws://localhost:8080/client/ws/speech", "-r", "32000", "/path/to/microphone-results-clean.wav"]` respectively.  
+4. Replace pwd at line 37 in dj.py with your password.
