@@ -33,3 +33,6 @@ The second model: `python2 client.py -u ws://localhost:9000/client/ws/speech -r 
 2. path should contain random songs, 1 directory named edm which contains edm songs (e.g. `"/Users/pongpisit/Desktop/songs/edm"`) and 1 directory named pop which contains pop songs (e.g. `"/Users/pongpisit/Desktop/songs/pop"`)  
 3. Change the code at line 44 and 72 in dj.py. They should be changed to `["/path/to/executable/python2.7", "/path/to/state2_client.py", "-u", "ws://localhost:9000/client/ws/speech", "-r", "32000", "/path/to/state2-microphone-results.wav"]` and `["/path/to/python2.7", "/path/to/newClient.py", "-u", "ws://localhost:8080/client/ws/speech", "-r", "32000", "/path/to/microphone-results-clean.wav"]` respectively.  
 4. Replace pwd at line 37 in dj.py with your password.
+
+# Demo
+https://www.youtube.com/watch?v=VVPDA6bHqH8&feature=youtu.be
