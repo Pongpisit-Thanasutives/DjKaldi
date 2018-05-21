@@ -183,9 +183,9 @@ def interrupt_callback():
     global interrupted
     return interrupted
 
-# Specify your model. If you wants a universal model, replace 'dj_kaldi.pmdl' with 'jarvis.umdl'.
+# Specify your model. If you wants a universal model, replace 'dj_kaldi.pmdl' with 'snowboy.umdl'.
 global model
-model = 'dj_kaldi.pmdl'
+model = 'dj_kaldi.pmdl' # djkaldi.pmdl is also working
 
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
